@@ -1,0 +1,41 @@
+{
+  "id": "review-claim",
+  "type": "default",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.10.0",
+  "schemaVersion": 16,
+  "components": [
+    {
+      "id": "Text_Header",
+      "type": "text",
+      "text": "### Claim {{claimId}}\n\nThe extraction below was produced by **{{extractedBy}}**. Check it against the original text before deciding."
+    },
+    {
+      "id": "Text_Extracted",
+      "type": "text",
+      "text": "| Field | Extracted value |\n|---|---|\n| Type | {{claim.claimType}} |\n| Amount claimed | {{claim.amountClaimed}} |\n| Incident date | {{claim.incidentDate}} |\n| Policy number | {{claim.policyNumber}} |\n| Summary | {{claim.summary}} |\n| Missing information | {{string join(claim.missingInformation, \", \")}} |"
+    },
+    {
+      "id": "Text_Original",
+      "type": "text",
+      "text": "#### Original claim text\n\n{{claimText}}"
+    },
+    {
+      "id": "Radio_Decision",
+      "type": "radio",
+      "key": "decision",
+      "label": "Decision",
+      "values": [
+        { "label": "Approve: queue the payout", "value": "approve" },
+        { "label": "Reject: send a rejection notice", "value": "reject" }
+      ],
+      "validate": { "required": true }
+    },
+    {
+      "id": "Textarea_Note",
+      "type": "textarea",
+      "key": "reviewerNote",
+      "label": "Reviewer note (goes on the payout record or the rejection notice)"
+    }
+  ]
+}

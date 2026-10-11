@@ -1,0 +1,26 @@
+{
+  "id": "manual-triage",
+  "type": "default",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.10.0",
+  "schemaVersion": 16,
+  "components": [
+    {
+      "id": "Text_Header",
+      "type": "text",
+      "text": "### Claim {{claimId}} needs a person\n\nThe automatic extraction ({{extractedBy}}) could not produce a usable result:\n\n{{string join(extractionProblems, \" \")}}"
+    },
+    {
+      "id": "Text_Original",
+      "type": "text",
+      "text": "#### Original claim text\n\n{{claimText}}"
+    },
+    {
+      "id": "Textarea_TriageNote",
+      "type": "textarea",
+      "key": "triageNote",
+      "label": "What you did with it (called the claimant, asked for the policy number, ...)",
+      "validate": { "required": true }
+    }
+  ]
+}

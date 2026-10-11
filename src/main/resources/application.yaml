@@ -1,0 +1,18 @@
+server:
+  port: 8090 # Camunda 8 Run already uses 8080
+
+camunda:
+  client:
+    mode: self-managed
+    auth:
+      method: none
+    grpc-address: http://localhost:26500
+    rest-address: http://localhost:8080
+
+claims:
+  # auto = Claude when ANTHROPIC_API_KEY is set, otherwise the offline rule-based extractor.
+  # claude / rules force one or the other.
+  extractor: auto
+  llm-model: claude-opus-5-5
+  # Where the automated actions write their records (stand-ins for a payments API and a mail service).
+  output-dir: out
