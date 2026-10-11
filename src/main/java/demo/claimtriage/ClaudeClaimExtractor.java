@@ -30,7 +30,7 @@ public class ClaudeClaimExtractor implements ClaimExtractor {
   public ClaimDetails extract(String claimText) {
     StructuredMessageCreateParams<ClaimDetails> params = MessageCreateParams.builder()
         .model(model)
-        .maxTokens(4096L)
+        .maxTokens(16000L) // thinking is always on for this model and counts against the cap
         .system(SYSTEM_PROMPT)
         .outputConfig(ClaimDetails.class)
         .addUserMessage("<claim>\n" + claimText + "\n</claim>")
@@ -40,6 +40,9 @@ public class ClaudeClaimExtractor implements ClaimExtractor {
 
     if (response.stopReason().filter(StopReason.REFUSAL::equals).isPresent()) {
       throw new ExtractionException("The model declined to process this claim.");
+    }
+    if (response.stopReason().filter(StopReason.MAX_TOKENS::equals).isPresent()) {
+      throw new ExtractionException("The model ran out of tokens before answering.");
     }
     return response.content().stream()
         .flatMap(block -> block.text().stream())
