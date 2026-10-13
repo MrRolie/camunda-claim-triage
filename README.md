@@ -31,9 +31,9 @@ Nothing is paid and nothing is sent until a person has decided.
 - **Two kinds of failure, handled in two places.** In
   [`ExtractClaimWorker`](src/main/java/demo/claimtriage/ExtractClaimWorker.java), an *unusable answer* is a
   business outcome. The worker throws a BPMN error, and the process model routes the claim to a person. A
-  *technical failure* (network, rate limit, API down) is not. That exception escapes, the engine retries the
-  job (3 times, set in the model), and then raises an incident in Operate. Business rules stay in the
-  diagram, and plumbing stays in the engine.
+  *technical failure* (network, rate limit, API down) is not. That exception escapes, the engine runs the
+  job up to 3 times in all (`retries="3"` in the model), and then raises an incident in Operate. Business
+  rules stay in the diagram, and plumbing stays in the engine.
 - **The model proposes, code checks, a person decides.**
   [`ClaimValidator`](src/main/java/demo/claimtriage/ClaimValidator.java) is deterministic and has no LLM in it.
   The model's output is a proposal until it passes the validator and the human review.
@@ -126,4 +126,4 @@ role and no assignment rules.
 ## How it was built
 
 Built with Claude Code (an AI coding agent) under my direction. I set the scope and approved the design;
-the agent wrote most of the code and this README.
+the agent wrote the code and this README.
